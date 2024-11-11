@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-11-2024 a las 00:25:06
+-- Tiempo de generación: 10-11-2024 a las 04:57:51
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.1.25
 
@@ -212,7 +212,8 @@ CREATE TABLE `empleado` (
 --
 
 INSERT INTO `empleado` (`id_empleado`, `nombre`, `apellidos`, `cargo`, `fecha_contratacion`, `correo_electronico`, `telefono`, `comision_ventas`, `nivel_acceso`) VALUES
-(1, 'Ana', 'Gómez', 'vendedor', '2022-01-15', 'ana.gomez@example.com', '555-5678', 5.00, 'medio');
+(1, 'vendedor', 'Gómez', 'vendedor', '2022-01-15', '', '555-5678', 5.00, 'medio'),
+(2, 'administracion', 'humberto', 'administracion', '2024-11-01', '', '22587910', NULL, 'alto');
 
 -- --------------------------------------------------------
 
@@ -374,6 +375,31 @@ CREATE TABLE `servicio` (
   `mecanico_asignado` int(11) DEFAULT NULL,
   `estado` enum('pendiente','en proceso','finalizado') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `usuario` varchar(50) NOT NULL,
+  `contraseña` varchar(50) NOT NULL,
+  `id_empleado` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `nombre`, `usuario`, `contraseña`, `id_empleado`) VALUES
+(1, 'obed', 'obedh', '11234', 2),
+(2, 'ana', 'anab', '01234', 2),
+(3, 'genesis', 'genesisj', '10234', 2),
+(4, 'alejandra', 'alejandram', '14023', 2),
+(5, 'kevin', 'kevinc', '34210', 2);
 
 -- --------------------------------------------------------
 
@@ -542,6 +568,13 @@ ALTER TABLE `servicio`
   ADD KEY `mecanico_asignado` (`mecanico_asignado`);
 
 --
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_empleado` (`id_empleado`);
+
+--
 -- Indices de la tabla `vehiculo`
 --
 ALTER TABLE `vehiculo`
@@ -602,7 +635,7 @@ ALTER TABLE `cotizacion`
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `factura`
@@ -657,6 +690,12 @@ ALTER TABLE `proveedor`
 --
 ALTER TABLE `servicio`
   MODIFY `id_servicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `vehiculo`
@@ -754,6 +793,12 @@ ALTER TABLE `servicio`
   ADD CONSTRAINT `servicio_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
   ADD CONSTRAINT `servicio_ibfk_2` FOREIGN KEY (`id_vehiculo`) REFERENCES `vehiculo` (`id_vehiculo`),
   ADD CONSTRAINT `servicio_ibfk_3` FOREIGN KEY (`mecanico_asignado`) REFERENCES `mecanico` (`id_mecanico`);
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_empleado`) REFERENCES `empleado` (`id_empleado`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `venta`
